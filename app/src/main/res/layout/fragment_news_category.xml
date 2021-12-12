@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.news.category.NewsCategoryFragment">
+
+    <data>
+        <import type="android.graphics.Typeface" />
+        <import type="android.view.View"/>
+        <import type="android.text.InputType"/>
+        <import type="android.text.TextUtils"/>
+        <variable
+            name="fragment"
+            type="me.aprilian.mynews.ui.news.category.NewsCategoryFragment" />
+        <variable
+            name="viewModel"
+            type="me.aprilian.mynews.ui.news.category.NewsCategoryViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <FrameLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/_12ssp"
+                />
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSource"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_category"
+            tools:itemCount="3"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -8,10 +8,13 @@
         <entry key="app/src/main/res/layout/core_state_error.xml" value="0.19739583333333333" />
         <entry key="app/src/main/res/layout/core_state_loading.xml" value="0.19739583333333333" />
         <entry key="app/src/main/res/layout/fragment_news_categories.xml" value="0.21292134831460674" />
+        <entry key="app/src/main/res/layout/fragment_news_category.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_news_list.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_category.xml" value="0.19739583333333333" />
         <entry key="app/src/main/res/layout/item_category_loading.xml" value="0.19739583333333333" />
         <entry key="app/src/main/res/layout/item_news.xml" value="0.19739583333333333" />
+        <entry key="app/src/main/res/layout/item_source.xml" value="0.17" />
+        <entry key="app/src/main/res/layout/item_source_loading.xml" value="0.109375" />
       </map>
     </option>
   </component>

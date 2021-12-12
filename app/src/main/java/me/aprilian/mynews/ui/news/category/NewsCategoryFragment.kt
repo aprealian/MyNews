@@ -1,24 +1,26 @@
-package me.aprilian.mynews.ui.news.categories
+package me.aprilian.mynews.ui.news.category
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import me.aprilian.mynews.core.data.Resource
 import me.aprilian.mynews.core.view.BaseFragment
 import me.aprilian.mynews.core.view.ItemDecoration
-import me.aprilian.mynews.databinding.FragmentNewsCategoriesBinding
+import me.aprilian.mynews.databinding.FragmentNewsCategoryBinding
 
-class NewsCategoriesFragment : BaseFragment() {
+class NewsCategoryFragment : BaseFragment() {
 
-    private val viewModel: NewsCategoriesViewModel by viewModels()
-    private var _binding: FragmentNewsCategoriesBinding? = null
+    private val viewModel: NewsCategoryViewModel by viewModels()
+    private val args: NewsCategoryFragmentArgs by navArgs()
+    private var _binding: FragmentNewsCategoryBinding? = null
     private val binding get() = _binding!!
-    private lateinit var newsCategoriesAdapter: NewsCategoriesAdapter
+    private lateinit var sourceAdapter: SourceAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = FragmentNewsCategoriesBinding.inflate(inflater).also {
+        _binding = FragmentNewsCategoryBinding.inflate(inflater).also {
             it.lifecycleOwner = viewLifecycleOwner
             it.fragment = this
             it.viewModel = viewModel
@@ -29,31 +31,30 @@ class NewsCategoriesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupArguments()
         setupAdapter()
         setupObservers()
     }
 
+    private fun setupArguments() {
+        viewModel.setSourceTag(args.sourceId)
+    }
+
     private fun setupObservers() {
-        viewModel.categories.observe(viewLifecycleOwner, {
-            newsCategoriesAdapter.submitData(it)
+        viewModel.sources.observe(viewLifecycleOwner, {
+            sourceAdapter.submitData(it)
         })
     }
 
     private fun setupAdapter() {
-        newsCategoriesAdapter = NewsCategoriesAdapter(requireContext(), Resource.loading()) { category ->
-            toast(category?.title)
-            openSourceNews(category?.tag)
+        sourceAdapter = SourceAdapter(requireContext(), Resource.loading()) { source ->
+            toast(source?.name)
         }
 
-        binding.rvCategories.apply {
-            adapter = newsCategoriesAdapter
+        binding.rvSource.apply {
+            adapter = sourceAdapter
             addItemDecoration(ItemDecoration(requireContext()))
         }
-    }
-
-    private fun openSourceNews(sourceTag: String?){
-        if (sourceTag == null) return
-        navigate(NewsCategoriesFragmentDirections.openNewsSource(sourceTag))
     }
 
 }
