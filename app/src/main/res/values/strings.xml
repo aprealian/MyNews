@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">My News</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lorem_ipsum">Lorem Ipsum</string>
+
+    <string name="api_error_no_internet_connection">No internet connection</string>
+    <string name="api_error_no_hostname">"No address associated with hostname"</string>
+    <string name="api_error_request_failed">Request failed</string>
+
 </resources>

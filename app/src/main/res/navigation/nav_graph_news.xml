@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/news_list_dest"
-        android:name="me.aprilian.mynews.ui.news.NewsListFragment"
+        android:name="me.aprilian.mynews.ui.news.categories.NewsCategoriesFragment"
         android:label="Article"
-        tools:layout="@layout/fragment_news_list">
+        tools:layout="@layout/fragment_news_categories">
     </fragment>
 
 
