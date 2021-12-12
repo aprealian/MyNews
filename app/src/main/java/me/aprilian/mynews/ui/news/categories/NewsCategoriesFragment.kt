@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import me.aprilian.mynews.core.data.Resource
 import me.aprilian.mynews.core.view.BaseFragment
 import me.aprilian.mynews.core.view.ItemDecoration
 import me.aprilian.mynews.databinding.FragmentNewsCategoriesBinding
 import me.aprilian.mynews.domain.Category
 
+@AndroidEntryPoint
 class NewsCategoriesFragment : BaseFragment() {
 
     private val viewModel: NewsCategoriesViewModel by viewModels()

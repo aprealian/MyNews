@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import me.aprilian.mynews.core.data.Resource
 import me.aprilian.mynews.core.view.BaseFragment
 import me.aprilian.mynews.core.view.ItemDecoration
 import me.aprilian.mynews.databinding.FragmentNewsCategoryBinding
+import me.aprilian.mynews.datasource.api.response.toDomainSource
 
+@AndroidEntryPoint
 class NewsCategoryFragment : BaseFragment() {
 
     private val viewModel: NewsCategoryViewModel by viewModels()
@@ -39,17 +42,27 @@ class NewsCategoryFragment : BaseFragment() {
     private fun setupArguments() {
         binding.tvTitle.text = args.category.title
         viewModel.setSourceTag(args.category.tag)
+        viewModel.loadAllNews()
     }
 
     private fun setupObservers() {
-        viewModel.sources.observe(viewLifecycleOwner, {
-            sourceAdapter.submitData(it)
+        viewModel.sources.observe(viewLifecycleOwner, { result ->
+            when(result.status){
+                Resource.Status.LOADING -> { }
+                Resource.Status.SUCCESS -> {
+                    sourceAdapter.addData(
+                        Resource.success(result.data?.sources?.map { it.toDomainSource() } ?: arrayListOf())
+                    )
+                }
+                else -> {
+                    toast(result.message)
+                }
+            }
         })
     }
 
     private fun setupAdapter() {
         sourceAdapter = SourceAdapter(requireContext(), Resource.loading()) { source ->
-            //toast(source?.name)
             openSourceNews(source?.id)
         }
 

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import me.aprilian.mynews.R
 import me.aprilian.mynews.core.data.Resource
+import me.aprilian.mynews.core.utils.clearHtmlTag
 import me.aprilian.mynews.core.utils.load
 import me.aprilian.mynews.core.view.BaseRVAdapter
 import me.aprilian.mynews.databinding.ItemArticleBinding
@@ -24,6 +25,7 @@ class ArticleAdapter(ctx: Context?, resource: Resource<List<Article>>, private v
             val item = resource.data?.get(position)
             holder.binding.article = item
             ctx?.let { holder.binding.ivArticle.load(it, item?.urlToImage) }
+            holder.binding.tvContent.text = item?.content?.clearHtmlTag()
             holder.binding.executePendingBindings()
             holder.itemView.setOnClickListener {
                 clickListener(item)

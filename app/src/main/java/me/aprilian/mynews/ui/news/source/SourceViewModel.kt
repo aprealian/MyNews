@@ -3,11 +3,18 @@ package me.aprilian.mynews.ui.news.source
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import me.aprilian.mynews.core.data.Resource
-import me.aprilian.mynews.domain.Article
-import me.aprilian.mynews.domain.Source
+import me.aprilian.mynews.datasource.api.response.ArticlesResponse
+import me.aprilian.mynews.datasource.reppository.NewsRepository
+import javax.inject.Inject
 
-class SourceViewModel : ViewModel(){
+@HiltViewModel
+class SourceViewModel @Inject constructor(
+    private val newsRepository: NewsRepository
+): ViewModel(){
 
     private val currentPage: Int = 1
     private var sourceTag: String? = null
@@ -16,15 +23,21 @@ class SourceViewModel : ViewModel(){
         this.sourceTag = sourceTag
     }
 
-    private val _articles = MutableLiveData<Resource<List<Article>>>()
-    val articles: LiveData<Resource<List<Article>>> = _articles
+    private val _articles = MutableLiveData<Resource<ArticlesResponse>>()
+    val articles: LiveData<Resource<ArticlesResponse>> = _articles
 
-    private fun loadAllNews(){
+    fun loadAllNews(){
         _articles.postValue(Resource.loading())
-        _articles.postValue(Resource.success(Article.getAll()))
+
+        viewModelScope.launch {
+            sourceTag?.let {
+                _articles.value = newsRepository.getArticles(it, currentPage).also {
+                    if (it.status == Resource.Status.SUCCESS) currentPage.inc()
+                }
+            } ?: kotlin.run {
+                _articles.postValue(Resource.error("Source not found"))
+            }
+        }
     }
 
-    init {
-        loadAllNews()
-    }
 }

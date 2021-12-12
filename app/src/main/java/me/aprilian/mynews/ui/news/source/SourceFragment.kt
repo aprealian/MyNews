@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import me.aprilian.mynews.core.data.Resource
 import me.aprilian.mynews.core.view.BaseFragment
 import me.aprilian.mynews.core.view.ItemDecoration
 import me.aprilian.mynews.databinding.FragmentSourceBinding
+import me.aprilian.mynews.datasource.api.response.toDomainArticle
 
+@AndroidEntryPoint
 class SourceFragment : BaseFragment() {
 
     private val viewModel: SourceViewModel by viewModels()
@@ -38,17 +41,27 @@ class SourceFragment : BaseFragment() {
 
     private fun setupArguments() {
         viewModel.setSourceTag(args.sourceId)
+        viewModel.loadAllNews()
     }
 
     private fun setupObservers() {
-        viewModel.articles.observe(viewLifecycleOwner, {
-            articleAdapter.submitData(it)
+        viewModel.articles.observe(viewLifecycleOwner, { result ->
+            when(result.status){
+                Resource.Status.LOADING -> { }
+                Resource.Status.SUCCESS -> {
+                    articleAdapter.addData(
+                        Resource.success(result.data?.articles?.map { it.toDomainArticle() } ?: arrayListOf())
+                    )
+                }
+                else -> {
+                    toast(result.message)
+                }
+            }
         })
     }
 
     private fun setupAdapter() {
         articleAdapter = ArticleAdapter(requireContext(), Resource.loading()) { source ->
-            //toast(source?.title)
             openArticle(source?.url)
         }
 

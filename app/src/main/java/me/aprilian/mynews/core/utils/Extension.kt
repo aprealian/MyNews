@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.text.Html
+import android.text.Spanned
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -56,4 +58,9 @@ fun ImageView.load(context: Context, image:Any?, placeholder: Int? = null){
         .load(image)
         .placeholder(placeholderDrawable)
         .into(this)
+}
+
+
+fun String.clearHtmlTag(): String {
+    return this.replace("(?s)<(\\w+)\\b[^<>]*>.*?</\\1>".toRegex(), "")
 }

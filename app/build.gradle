@@ -26,6 +26,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField 'String', 'API_NEWS_URL', '\"https://newsapi.org/v2/\"'
+            buildConfigField 'String', 'API_KEY', '\"d0fd7db2fcc84c35ac693bbc85d1e7be\"'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField 'String', 'API_NEWS_URL', '\"https://newsapi.org/v2/\"'
+            buildConfigField 'String', 'API_KEY', '\"d0fd7db2fcc84c35ac693bbc85d1e7be\"'
         }
     }
     compileOptions {
