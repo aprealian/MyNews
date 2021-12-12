@@ -1,4 +1,4 @@
-package me.aprilian.mynews.ui.news.category
+package me.aprilian.mynews.ui.news.source
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,18 +9,18 @@ import androidx.navigation.fragment.navArgs
 import me.aprilian.mynews.core.data.Resource
 import me.aprilian.mynews.core.view.BaseFragment
 import me.aprilian.mynews.core.view.ItemDecoration
-import me.aprilian.mynews.databinding.FragmentNewsCategoryBinding
+import me.aprilian.mynews.databinding.FragmentSourceBinding
 
-class NewsCategoryFragment : BaseFragment() {
+class SourceFragment : BaseFragment() {
 
-    private val viewModel: NewsCategoryViewModel by viewModels()
-    private val args: NewsCategoryFragmentArgs by navArgs()
-    private var _binding: FragmentNewsCategoryBinding? = null
+    private val viewModel: SourceViewModel by viewModels()
+    private val args: SourceFragmentArgs by navArgs()
+    private var _binding: FragmentSourceBinding? = null
     private val binding get() = _binding!!
-    private lateinit var sourceAdapter: SourceAdapter
+    private lateinit var articleAdapter: ArticleAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = FragmentNewsCategoryBinding.inflate(inflater).also {
+        _binding = FragmentSourceBinding.inflate(inflater).also {
             it.lifecycleOwner = viewLifecycleOwner
             it.fragment = this
             it.viewModel = viewModel
@@ -37,31 +37,30 @@ class NewsCategoryFragment : BaseFragment() {
     }
 
     private fun setupArguments() {
-        binding.tvTitle.text = args.category.title
-        viewModel.setSourceTag(args.category.tag)
+        viewModel.setSourceTag(args.sourceId)
     }
 
     private fun setupObservers() {
-        viewModel.sources.observe(viewLifecycleOwner, {
-            sourceAdapter.submitData(it)
+        viewModel.articles.observe(viewLifecycleOwner, {
+            articleAdapter.submitData(it)
         })
     }
 
     private fun setupAdapter() {
-        sourceAdapter = SourceAdapter(requireContext(), Resource.loading()) { source ->
-            //toast(source?.name)
-            openSourceNews(source?.id)
+        articleAdapter = ArticleAdapter(requireContext(), Resource.loading()) { source ->
+            //toast(source?.title)
+            openArticle(source?.url)
         }
 
-        binding.rvSource.apply {
-            adapter = sourceAdapter
+        binding.rvArticles.apply {
+            adapter = articleAdapter
             addItemDecoration(ItemDecoration(requireContext()))
         }
     }
 
-    private fun openSourceNews(sourceId: String?){
-        if (sourceId == null) return
-        navigate(NewsCategoryFragmentDirections.openSource(sourceId))
+    private fun openArticle(url: String?){
+        if (url == null) return
+        navigate(SourceFragmentDirections.openArticle(url))
     }
 
 }

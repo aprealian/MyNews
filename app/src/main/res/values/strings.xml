@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">My News</string>
     <string name="lorem_ipsum">Lorem Ipsum</string>
+    <string name="articles">Articles</string>
 
     <string name="api_error_no_internet_connection">No internet connection</string>
     <string name="api_error_no_hostname">"No address associated with hostname"</string>

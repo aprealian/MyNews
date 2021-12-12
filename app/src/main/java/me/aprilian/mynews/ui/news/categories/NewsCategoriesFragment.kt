@@ -9,6 +9,7 @@ import me.aprilian.mynews.core.data.Resource
 import me.aprilian.mynews.core.view.BaseFragment
 import me.aprilian.mynews.core.view.ItemDecoration
 import me.aprilian.mynews.databinding.FragmentNewsCategoriesBinding
+import me.aprilian.mynews.domain.Category
 
 class NewsCategoriesFragment : BaseFragment() {
 
@@ -41,8 +42,8 @@ class NewsCategoriesFragment : BaseFragment() {
 
     private fun setupAdapter() {
         newsCategoriesAdapter = NewsCategoriesAdapter(requireContext(), Resource.loading()) { category ->
-            toast(category?.title)
-            openSourceNews(category?.tag)
+            //toast(category?.title)
+            openCategory(category)
         }
 
         binding.rvCategories.apply {
@@ -51,9 +52,9 @@ class NewsCategoriesFragment : BaseFragment() {
         }
     }
 
-    private fun openSourceNews(sourceTag: String?){
-        if (sourceTag == null) return
-        navigate(NewsCategoriesFragmentDirections.openNewsSource(sourceTag))
+    private fun openCategory(category: Category?){
+        if (category == null) return toast("Category not found")
+        navigate(NewsCategoriesFragmentDirections.openCategory(category))
     }
 
 }

@@ -11,7 +11,7 @@
         android:label="Categories"
         tools:layout="@layout/fragment_news_categories">
         <action
-            android:id="@+id/open_news_source"
+            android:id="@+id/open_category"
             app:destination="@id/news_category_dest"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
@@ -27,9 +27,49 @@
         android:label="Category"
         tools:layout="@layout/fragment_news_category">
         <argument
-            android:name="sourceId"
-            app:argType="string" />
+            android:name="category"
+            app:argType="me.aprilian.mynews.domain.Category" />
+
+        <action
+            android:id="@+id/open_source"
+            app:destination="@id/source_dest"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpToSaveState="true"
+            app:restoreState="true"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/source_dest"
+        android:name="me.aprilian.mynews.ui.news.source.SourceFragment"
+        android:label="Source"
+        tools:layout="@layout/fragment_source">
+        <argument
+            android:name="sourceId"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/open_article"
+            app:destination="@id/article_dest"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpToSaveState="true"
+            app:restoreState="true"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/article_dest"
+        android:name="me.aprilian.mynews.ui.news.article.ArticleFragment"
+        android:label="Article"
+        tools:layout="@layout/fragment_article">
+        <argument
+            android:name="sourceUrl"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import me.aprilian.mynews.R
 import me.aprilian.mynews.core.data.Resource
+import me.aprilian.mynews.core.utils.load
 import me.aprilian.mynews.core.view.BaseRVAdapter
 import me.aprilian.mynews.databinding.ItemCategoryBinding
 import me.aprilian.mynews.domain.Category
@@ -22,6 +23,7 @@ class NewsCategoriesAdapter(ctx: Context?, resource: Resource<List<Category>>, p
         if (holder is CategoryViewHolder) {
             val item = resource.data?.get(position)
             holder.binding.category = item
+            ctx?.let { holder.binding.ivMovie.load(it, item?.drawableId) }
             holder.binding.executePendingBindings()
             holder.itemView.setOnClickListener {
                 clickListener(item)
