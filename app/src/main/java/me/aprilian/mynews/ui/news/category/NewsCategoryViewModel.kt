@@ -32,15 +32,11 @@ class NewsCategoryViewModel @Inject constructor(
         viewModelScope.launch {
             sourceTag?.let {
                 _sources.value = newsRepository.getSources(it, currentPage)
-                //if (_sources.value?.status == Resource.Status.SUCCESS) currentPage.inc()
+                if (_sources.value?.status == Resource.Status.SUCCESS) currentPage.inc()
             } ?: kotlin.run {
                 _sources.postValue(Resource.error("Source not found"))
             }
         }
-    }
-
-    fun incPage(){
-        currentPage.inc()
     }
 
 }

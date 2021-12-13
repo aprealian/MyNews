@@ -76,7 +76,6 @@ class SourceFragment : BaseFragment() {
                     articleAdapter.addData(
                         Resource.success(result.data?.articles?.map { it.toDomainArticle() } ?: arrayListOf())
                     )
-                    viewModel.incPage()
                 }
                 else -> {
                     binding.progressBar.gone()

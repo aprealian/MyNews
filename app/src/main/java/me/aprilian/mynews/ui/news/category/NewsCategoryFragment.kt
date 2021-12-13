@@ -75,8 +75,6 @@ class NewsCategoryFragment : BaseFragment() {
                     sourceAdapter.addData(
                         Resource.success(result.data?.sources?.map { it.toDomainSource() } ?: arrayListOf())
                     )
-
-                    viewModel.incPage()
                 }
                 else -> {
                     toast(result.message)
