@@ -12,6 +12,8 @@ import me.aprilian.mynews.core.view.BaseFragment
 import me.aprilian.mynews.core.view.ItemDecoration
 import me.aprilian.mynews.databinding.FragmentSourceBinding
 import me.aprilian.mynews.datasource.api.response.toDomainArticle
+import androidx.core.widget.NestedScrollView
+import me.aprilian.mynews.core.utils.gone
 
 @AndroidEntryPoint
 class SourceFragment : BaseFragment() {
@@ -21,6 +23,7 @@ class SourceFragment : BaseFragment() {
     private var _binding: FragmentSourceBinding? = null
     private val binding get() = _binding!!
     private lateinit var articleAdapter: ArticleAdapter
+    private var count = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSourceBinding.inflate(inflater).also {
@@ -37,6 +40,26 @@ class SourceFragment : BaseFragment() {
         setupArguments()
         setupAdapter()
         setupObservers()
+        setupListener()
+    }
+
+    private fun setupListener() {
+        binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            // on scroll change we are checking when users scroll as bottom.
+            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                // in this method we are incrementing page number,
+                // making progress bar visible and calling get data method.
+                count++
+                if (count < 20) {
+                    // on below line we are making our progress bar visible.
+                    binding.progressBar.visibility = View.VISIBLE
+
+                    // on below line we are again calling
+                    // a method to load data in our array list.
+                    viewModel.loadAllNews()
+                }
+            }
+        })
     }
 
     private fun setupArguments() {
@@ -49,11 +72,14 @@ class SourceFragment : BaseFragment() {
             when(result.status){
                 Resource.Status.LOADING -> { }
                 Resource.Status.SUCCESS -> {
+                    binding.progressBar.gone()
                     articleAdapter.addData(
                         Resource.success(result.data?.articles?.map { it.toDomainArticle() } ?: arrayListOf())
                     )
+                    viewModel.incPage()
                 }
                 else -> {
+                    binding.progressBar.gone()
                     toast(result.message)
                 }
             }
@@ -74,6 +100,10 @@ class SourceFragment : BaseFragment() {
     private fun openArticle(url: String?){
         if (url == null) return
         navigate(SourceFragmentDirections.openArticle(url))
+    }
+
+    override fun navigateBack() {
+        navigate(SourceFragmentDirections.fromSourceBackToCategory())
     }
 
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +22,7 @@ class NewsCategoryFragment : BaseFragment() {
     private var _binding: FragmentNewsCategoryBinding? = null
     private val binding get() = _binding!!
     private lateinit var sourceAdapter: SourceAdapter
+    private var count = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentNewsCategoryBinding.inflate(inflater).also {
@@ -37,12 +39,32 @@ class NewsCategoryFragment : BaseFragment() {
         setupArguments()
         setupAdapter()
         setupObservers()
+        //setupListener() disable this cause the sources API didn't support pagination
+    }
+
+    private fun setupListener() {
+        binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            // on scroll change we are checking when users scroll as bottom.
+            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                // in this method we are incrementing page number,
+                // making progress bar visible and calling get data method.
+                count++
+                if (count < 20) {
+                    // on below line we are making our progress bar visible.
+                    binding.progressBar.visibility = View.VISIBLE
+
+                    // on below line we are again calling
+                    // a method to load data in our array list.
+                    viewModel.loadAllSource()
+                }
+            }
+        })
     }
 
     private fun setupArguments() {
         binding.tvTitle.text = args.category.title
         viewModel.setSourceTag(args.category.tag)
-        viewModel.loadAllNews()
+        viewModel.loadAllSource()
     }
 
     private fun setupObservers() {
@@ -53,6 +75,8 @@ class NewsCategoryFragment : BaseFragment() {
                     sourceAdapter.addData(
                         Resource.success(result.data?.sources?.map { it.toDomainSource() } ?: arrayListOf())
                     )
+
+                    viewModel.incPage()
                 }
                 else -> {
                     toast(result.message)

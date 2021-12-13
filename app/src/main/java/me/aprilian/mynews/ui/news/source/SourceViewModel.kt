@@ -27,17 +27,21 @@ class SourceViewModel @Inject constructor(
     val articles: LiveData<Resource<ArticlesResponse>> = _articles
 
     fun loadAllNews(){
-        _articles.postValue(Resource.loading())
+        if (_articles.value?.status != Resource.Status.LOADING)
 
+        _articles.postValue(Resource.loading())
         viewModelScope.launch {
             sourceTag?.let {
-                _articles.value = newsRepository.getArticles(it, currentPage).also {
-                    if (it.status == Resource.Status.SUCCESS) currentPage.inc()
-                }
+                _articles.value = newsRepository.getArticles(it, currentPage)
+                //if (_articles.value?.status == Resource.Status.SUCCESS) currentPage.inc()
             } ?: kotlin.run {
                 _articles.postValue(Resource.error("Source not found"))
             }
         }
+    }
+
+    fun incPage(){
+        currentPage.inc()
     }
 
 }

@@ -59,4 +59,9 @@ class NewsCategoriesFragment : BaseFragment() {
         navigate(NewsCategoriesFragmentDirections.openCategory(category))
     }
 
+    override fun navigateBack() {
+        super.navigateBack()
+        requireActivity().finish()
+    }
+
 }

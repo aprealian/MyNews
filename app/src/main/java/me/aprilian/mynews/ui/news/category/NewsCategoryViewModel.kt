@@ -26,18 +26,21 @@ class NewsCategoryViewModel @Inject constructor(
     private val _sources = MutableLiveData<Resource<SourceByCategoryResponse>>()
     val sources: LiveData<Resource<SourceByCategoryResponse>> = _sources
 
-    fun loadAllNews(){
+    fun loadAllSource(){
         _sources.postValue(Resource.loading())
 
         viewModelScope.launch {
             sourceTag?.let {
-                _sources.value = newsRepository.getSources(it, currentPage).also {
-                    if (it.status == Resource.Status.SUCCESS) currentPage.inc()
-                }
+                _sources.value = newsRepository.getSources(it, currentPage)
+                //if (_sources.value?.status == Resource.Status.SUCCESS) currentPage.inc()
             } ?: kotlin.run {
                 _sources.postValue(Resource.error("Source not found"))
             }
         }
+    }
+
+    fun incPage(){
+        currentPage.inc()
     }
 
 }
