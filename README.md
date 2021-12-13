@@ -2,8 +2,6 @@
  
 Hi, I created Android News app using <a href="https://newsapi.org/">NewsAPI</a> and Jetpack Component.
 
-<img src="https://github.com/aprealian/MovieApp/blob/main/doc/movieapp.gif" alt="MovieApp Preview" height="480"/>
-
 ## Used Libraries
 
 <ul>
