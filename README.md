@@ -2,6 +2,19 @@
  
 Hi, I created Android News app using <a href="https://newsapi.org/">NewsAPI</a> and Jetpack Component.
 
+You can try the APK by download it here: https://drive.google.com/file/d/1PvDpUZnLRACpxP4-ZnvW5TLxnYLcxwbR/view?usp=sharing
+
+<img src="https://github.com/aprealian/MyNews/blob/main/doc/my%20news%20app.jpeg" alt="MovieApp Preview" height="480"/>
+
+## Requirements
+- Deploy with Android Studio Artic Fox 2020 3.1
+
+- Gradle JDK need Java 11
+
+- Min SDK 19
+
+- Target SDK 31
+
 ## Used Libraries
 
 <ul>
