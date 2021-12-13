@@ -79,7 +79,7 @@ class SourceFragment : BaseFragment() {
                 }
                 else -> {
                     binding.progressBar.gone()
-                    toast(result.message)
+                    articleAdapter.errorState(message = "ERROR: "+result.message)
                 }
             }
         })

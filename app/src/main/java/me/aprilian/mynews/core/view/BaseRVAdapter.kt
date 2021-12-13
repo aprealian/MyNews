@@ -4,9 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import me.aprilian.mynews.R
 import me.aprilian.mynews.core.data.Resource
+import me.aprilian.mynews.core.utils.toast
 import java.lang.Exception
 
 abstract class BaseRVAdapter<T>(val ctx: Context?, var resource: Resource<List<T>>, private val loadingLayout: Int = R.layout.core_state_loading, private val emptyLayout: Int = R.layout.core_state_empty, private val errorLayout: Int = R.layout.core_state_error, private val listener: IAdapter? = null) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -24,7 +26,14 @@ abstract class BaseRVAdapter<T>(val ctx: Context?, var resource: Resource<List<T
     }
 
     open fun createErrorViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        return LoadingItem(LayoutInflater.from(parent.context).inflate(R.layout.core_state_error, parent, false))
+        return try {
+            val errorView = LoadingItem(LayoutInflater.from(parent.context).inflate(errorLayout, parent, false))
+            val textView = errorView.itemView.findViewById<TextView>(R.id.tvErrorMessage)
+            textView.text = resource.message
+            errorView
+        } catch (e: Exception){
+            LoadingItem(LayoutInflater.from(parent.context).inflate(R.layout.core_state_error, parent, false))
+        }
     }
 
     open fun createEmptyViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -82,6 +91,11 @@ abstract class BaseRVAdapter<T>(val ctx: Context?, var resource: Resource<List<T
         }
 
         return TYPE_DATA
+    }
+
+    open fun errorState(message: String? = null){
+        val errorMessage = message ?: errorMessage
+        if (resource.status == Resource.Status.LOADING) submitData(Resource.error(errorMessage)) else ctx?.toast(errorMessage)
     }
 
     companion object {

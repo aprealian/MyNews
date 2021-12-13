@@ -77,7 +77,7 @@ class NewsCategoryFragment : BaseFragment() {
                     )
                 }
                 else -> {
-                    toast(result.message)
+                    sourceAdapter.errorState(message = "ERROR: "+result.message)
                 }
             }
         })

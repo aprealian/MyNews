@@ -29,4 +29,5 @@ class SourceAdapter(ctx: Context?, resource: Resource<List<Source>>, private val
             }
         }
     }
+
 }

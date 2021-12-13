@@ -2,10 +2,12 @@
     <string name="app_name">My News</string>
     <string name="lorem_ipsum">Lorem Ipsum</string>
     <string name="articles">Articles</string>
+    <string name="not_found">Not found</string>
 
     <string name="api_error_no_internet_connection">No internet connection</string>
     <string name="api_error_no_hostname">"No address associated with hostname"</string>
     <string name="api_error_request_failed">Request failed</string>
+    <string name="api_error_failed_load_data">"Failed to load data"</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
